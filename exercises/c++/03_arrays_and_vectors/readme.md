@@ -19,7 +19,7 @@
 *Hints*:
  - Use `std::istringstream` defined in the header `<sstream>`
 
- ```c++
+```c++
 #include <sstream>
 
 std::size_t rows;
@@ -27,8 +27,7 @@ std::size_t rows;
   std::istringstream is{argv[1]};
   is >> rows;
 }
- ```
-
+```
 
 ## Mean and Median
 
@@ -92,3 +91,4 @@ auto t0 = high_resolution_clock::now();
 ...
 std::this_thread::sleep_for (std::chrono::milliseconds(50));
 ```
+^^
