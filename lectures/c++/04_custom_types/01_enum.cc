@@ -3,11 +3,16 @@
 enum color { red, yellow, green };
 // enum color{red=0, yellow=1, green=2}; // equivalent
 
+// constexpr cm_to_inch: use (in C) to e.g. convert units
+// in C++ not advisable since constexpr is evaluated at runtime 
+
+
 void dwim(const color c) {
   switch (c) {
     case red:
       std::cout << "option 1: red\n";
-      break;
+      break;          // "break" is required, otherwise all cases will be 
+                      // executed one after another
     case yellow:
       std::cout << "option 2: yellow\n";
       break;
