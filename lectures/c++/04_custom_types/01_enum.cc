@@ -6,7 +6,6 @@ enum color { red, yellow, green };
 // constexpr cm_to_inch: use (in C) to e.g. convert units
 // in C++ not advisable since constexpr is evaluated at runtime 
 
-
 void dwim(const color c) {
   switch (c) {
     case red:

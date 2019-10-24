@@ -6,6 +6,7 @@ struct Foo {
                    with underscore prefix. Variables here have already been 
                    constructed. In this area, you cannot use "=". Instead, use 
                    curly braces {}. */
+  int _i;
   double _d;
   std::string _s;
 
@@ -13,7 +14,6 @@ struct Foo {
       const std::string& s);  // custom constructor
 
   Foo();  // default constructor (is this line necessary?)
-
   ~Foo();  // destructor
 };
 
@@ -27,6 +27,7 @@ Foo::Foo(const int i, const double d, const std::string& s)
   /* Writing "_i{i}"" here would cause an error, because it has already been 
      initialized. You could instead write here _i = i; but it it slower than the
      combined construction & initialization operation _i{i} above. */ 
+
   std::cout << "custom ctor\n";
   // if you want/need you can use _i, _d, _s and change their value
   // with the usual notation +,-,=,*, call a function..
@@ -66,5 +67,13 @@ int main() {
   /* A destructor "destroys" (disallocates) the elements of a class object
      in the inverse order compared to the constructor.
      IMPORTANT: Never invoke a destructor by hand! */
+
+  Foo f1{};  // call default ctor
+  // Foo f2(); // compiler error
+
+  Foo f2{8, 2.2, "hello"};
+  std::cout << "f0: " << f0 << "f1: " << f1 << "f2: " << f2 << std::endl;
+
+  // the destructor is called when the variable goes out of scope
   return 0;
 }

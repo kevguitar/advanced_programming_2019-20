@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 
+<<<<<<< HEAD
 
 // structs in C++ CAN have variables AND functions!
 struct Point_s {
@@ -27,9 +28,8 @@ class Point_c {
     std::cout << "Class. x = " << x << "; y = " << y << std::endl;
   }  // note no ; at the end
 };   // note ; at the end
-
-
 // Remember: All the member functions of a class can access all its symbols! 
+
 
 int main() {
   Point_s ps;
@@ -42,6 +42,7 @@ int main() {
   // pc.x =7.6; // error
   pc.print();  // I can access private data through public functions
 
+<<<<<<< HEAD
   Point_s* p = &ps;   // pointer to a class
   p->x = 0.0;         // assign to the element x of the object ps the value 0.0
   p->print();
@@ -59,6 +60,7 @@ int main() {
 
   std::vector<Point_s> vs;    // std::vector of objects of struct Point_s
   vs.push_back(ps);           // creates a copy of ps and puts it inside of vs
+
   vs[0].x = 999;
   ps.x = 11;
   ps.print();

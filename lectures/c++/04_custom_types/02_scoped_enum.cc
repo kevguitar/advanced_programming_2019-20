@@ -1,6 +1,5 @@
 #include <iostream>
 
-
 // New feature in C++: allow for "red" to be an element of the class "color",
 // preventing name clashing with another element named "red".
 enum class color { red, yellow, green };
