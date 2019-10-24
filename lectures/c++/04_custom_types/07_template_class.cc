@@ -16,11 +16,13 @@ class Vector {
   // try to remove the const and recompile
   /* The size will not be changed when running the function. 
      Therefore "const" is used. */
+
   std::size_t size() const { return _size; }
 
   num& operator[](const std::size_t i) { return elem[i]; }
 
   // try to comment this line and recompile
+
   /* The compiler says: "I cannot be sure that you don't modify size()" and
     invokes an error. */
   const num& operator[](const std::size_t i) const { return elem[i]; }
@@ -44,6 +46,7 @@ int main() {
   Vector<double>* pv{&v};
 
   /* Tricky (ugly!): dereference overloaded operators. */
+  
   // first dereference the pointer, then I can use the defined operators
   (*pv)[0] = -99.999;
 
