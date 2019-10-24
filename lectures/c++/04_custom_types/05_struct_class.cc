@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 
+<<<<<<< HEAD
 
 // structs in C++ CAN have variables AND functions!
 struct Point_s {
@@ -16,21 +17,41 @@ void Point_s::print() {  // function definition outside a struct
 
 
 // classes in C++ are basically struct, except for the following differences
+=======
+struct Point_s {
+  double x;
+  double y;
+  void print();
+};  // note ; at the end
+
+void Point_s::print() {
+  std::cout << "Structure. x = " << x << "; y = " << y << std::endl;
+}
+
+>>>>>>> 9282c88989c7df919152ca3ebcc786da20164736
 class Point_c {
   double x;
   double y;
 
+<<<<<<< HEAD
 // default: private (not visible in outside scope)
  public:
   void print() {      // function declaration and initialization inside class,
                       // (but one can always define it outside the class)
+=======
+ public:
+  void print() {
+>>>>>>> 9282c88989c7df919152ca3ebcc786da20164736
     std::cout << "Class. x = " << x << "; y = " << y << std::endl;
   }  // note no ; at the end
 };   // note ; at the end
 
+<<<<<<< HEAD
 
 // Remember: All the member functions of a class can access all its symbols! 
 
+=======
+>>>>>>> 9282c88989c7df919152ca3ebcc786da20164736
 int main() {
   Point_s ps;
   ps.x = 9.9;
@@ -42,6 +63,7 @@ int main() {
   // pc.x =7.6; // error
   pc.print();  // I can access private data through public functions
 
+<<<<<<< HEAD
   Point_s* p = &ps;   // pointer to a class
   p->x = 0.0;         // assign to the element x of the object ps the value 0.0
   p->print();
@@ -59,11 +81,31 @@ int main() {
 
   std::vector<Point_s> vs;    // std::vector of objects of struct Point_s
   vs.push_back(ps);           // creates a copy of ps and puts it inside of vs
+=======
+  Point_s* p = &ps;
+  p->x = 0.0;
+  p->print();
+
+  auto& pr = ps;
+  ++pr.x;
+  pr.print();
+
+  Point_s array_of_structs[8];  // built-in array
+  array_of_structs[0].x = 1;
+  array_of_structs[0].y = 2;
+
+  std::array<Point_s, 5> as;
+  as[3].x = 3;
+
+  std::vector<Point_s> vs;
+  vs.push_back(ps);
+>>>>>>> 9282c88989c7df919152ca3ebcc786da20164736
   vs[0].x = 999;
   ps.x = 11;
   ps.print();
   vs[0].print();
 
+<<<<<<< HEAD
   // How is the initialization of std::vector<Point_s> is possible without
   // memory leaks? Solution: constructor and destructor operators!
 
@@ -73,5 +115,7 @@ int main() {
   // 2) Is there a "default constructor" implemented automatically in every 
   //    struct? 
 
+=======
+>>>>>>> 9282c88989c7df919152ca3ebcc786da20164736
   return 0;
 }

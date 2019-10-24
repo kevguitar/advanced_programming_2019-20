@@ -7,22 +7,31 @@ class Vector {
   std::size_t _size;
 
  public:
+<<<<<<< HEAD
   // custom constructor
+=======
+>>>>>>> 9282c88989c7df919152ca3ebcc786da20164736
   Vector(const std::size_t size) : elem{new num[size]}, _size{size} {}
 
   // automatically release the acquired memory
   ~Vector() { delete[] elem; }
 
   // try to remove the const and recompile
+<<<<<<< HEAD
   /* The size will not be changed when running the function. 
      Therefore "const" is used. */
+=======
+>>>>>>> 9282c88989c7df919152ca3ebcc786da20164736
   std::size_t size() const { return _size; }
 
   num& operator[](const std::size_t i) { return elem[i]; }
 
   // try to comment this line and recompile
+<<<<<<< HEAD
   /* The compiler says: "I cannot be sure that you don't modify size()" and
     invokes an error. */
+=======
+>>>>>>> 9282c88989c7df919152ca3ebcc786da20164736
   const num& operator[](const std::size_t i) const { return elem[i]; }
 };
 
@@ -43,7 +52,10 @@ int main() {
 
   Vector<double>* pv{&v};
 
+<<<<<<< HEAD
   /* Tricky (ugly!): dereference overloaded operators. */
+=======
+>>>>>>> 9282c88989c7df919152ca3ebcc786da20164736
   // first dereference the pointer, then I can use the defined operators
   (*pv)[0] = -99.999;
 
