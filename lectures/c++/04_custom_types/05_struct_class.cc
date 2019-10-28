@@ -2,7 +2,6 @@
 #include <iostream>
 #include <vector>
 
-<<<<<<< HEAD
 
 // structs in C++ CAN have variables AND functions!
 struct Point_s {
@@ -42,7 +41,6 @@ int main() {
   // pc.x =7.6; // error
   pc.print();  // I can access private data through public functions
 
-<<<<<<< HEAD
   Point_s* p = &ps;   // pointer to a class
   p->x = 0.0;         // assign to the element x of the object ps the value 0.0
   p->print();
