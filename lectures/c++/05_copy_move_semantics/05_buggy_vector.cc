@@ -7,6 +7,8 @@ class Vector {
   std::size_t _size;
 
  public:
+  /* Not initializing the elements, we construct a vector with elements all
+     equal to zero. */
   explicit Vector(const std::size_t length)
       : elem{new T[length]{}}, _size{length} {}
 
@@ -25,7 +27,13 @@ class Vector {
 
 int main() {
   Vector<double> v1{7};
+  
+  std::cout << "v1: ";
+  for (const auto x : v1)
+    std::cout << x << " ";
+  std::cout << std::endl;
+
   // Vector<double> v2{v1}; // default copy ctor calls a deleted function by
-  // std::unique_ptr
+                            // std::unique_ptr
   return 0;
 }

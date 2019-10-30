@@ -6,7 +6,14 @@ class Vector {
   std::size_t _size;
 
  public:
-  explicit Vector(const std::size_t length)
+  /* "explicit" means not to invoke the default constructor.
+     "new T[length]" initialized array in the heap
+     without the last {}, we would get "error: malloc"
+  */   
+
+  /* Must include this explicit constructor, because default constructor needs
+    two arguments (not one, as given in main()). */
+   /*explicit*/ Vector(const std::size_t length)
       : elem{new T[length]{}}, _size{length} {}
 
   ~Vector() { delete[] elem; }
@@ -17,6 +24,7 @@ class Vector {
   std::size_t size() const { return _size; }
 
   // range-for
+  /* This enables me to invoke "auto" to instatiations of the class. */
   const T* begin() const { return elem; }
   T* begin() { return elem; }
 
@@ -25,10 +33,14 @@ class Vector {
 };
 
 int main() {
-  Vector<int> v1{3};
+  Vector<int> v1{4};
+
+  // "Vector<int> v1;" here invokes a segmentation fault!
   v1[0] = 1;
   v1[1] = 2;
   v1[2] = 3;
+  v1[3] = 4;
+  std::cout<<"check"<<std::endl;
 
   std::cout << "v1: ";
   for (const auto x : v1)
@@ -51,6 +63,8 @@ int main() {
 
   v2[1] = -999;
 
+
+  /* v1 will have elements {99, -999, 3}, not {99, 2, 3}. */
   std::cout << "v1 after v2 has been changed: ";
   for (const auto x : v1)
     std::cout << x << " ";

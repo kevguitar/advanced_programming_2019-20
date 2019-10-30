@@ -23,7 +23,7 @@ class Vector {
   // default ctor
   Vector() { std::cout << "default ctor\n"; }  // _size uninitialized
   // Vector() : _size{}, elem{} { std::cout << "default ctor\n"; } // this could
-  // be better Vector() = default;
+  // be better Vector() = default; /* What does he mean by this? */
 
   ~Vector() = default;
 
@@ -42,6 +42,7 @@ class Vector {
   // move semantics
 
   // move ctor
+  /* Why need double reference here? */
   Vector(Vector&& v) : _size{std::move(v._size)}, elem{std::move(v.elem)} {
     std::cout << "move ctor\n";
   }
@@ -53,6 +54,7 @@ class Vector {
     std::cout << "move assignment\n";
     _size = std::move(v._size);
     elem = std::move(v.elem);
+    /* *this gives the instantiation of the class (the object). */
     return *this;
   }
 
@@ -78,6 +80,7 @@ class Vector {
 template <typename T>
 Vector<T>::Vector(const Vector& v) : _size{v._size}, elem{new T[_size]} {
   std::cout << "copy ctor\n";
+  /* How does std::copy act on the memory? */
   std::copy(v.begin(), v.end(), begin());
 }
 
@@ -109,6 +112,7 @@ Vector<T> operator+(const Vector<T>& lhs, const Vector<T>& rhs) {
   const auto size = lhs.size();
 
   // how we should check that the two vectors have the same size?
+  /* We do not check here, do we ? If rhs has less elements than lhs, error!? */
 
   Vector<T> res(size);
   for (std::size_t i = 0; i < size; ++i)

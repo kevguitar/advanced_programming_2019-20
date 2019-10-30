@@ -2,10 +2,17 @@
 
 struct X {
   int a = 5;  // in-class initialization
-  double b;
+  double b;   // with {}, b would be initialized to 0. Without {}, random double.
   char c = 'a';
-  X() = default;  // in-class initializers are used by the constructors
+  X() = default;  // in-class initializers are used by the constructors:
+                  /* (This is not needed, but it increases readability!)
+                     This obliges the complier to generate the default 
+                     constructor, even if there is a custom compiler. */
 };
+
+/* Built-in types (int, double, char*, ...) are automatically initialized to a 
+   value (random value or zero), while custom types (e.g. std::string) are never 
+   automatically initialized, i.e. null pointer. */
 
 struct Y {
   int a = 77;
