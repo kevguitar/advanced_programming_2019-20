@@ -87,6 +87,11 @@ Vector<T>::Vector(const Vector& v) : _size{v._size}, elem{new T[_size]} {
 // copy assignment
 template <typename T>
 Vector<T>& Vector<T>::operator=(const Vector& v) {
+
+  // Value of this is the address of the very same object.
+  if (&v == this)
+    return *this;
+
   std::cout << "copy assignment (\n";
 
   // we could decide that this operation is allowed if and only if
@@ -138,7 +143,9 @@ int main() {
   std::cout << v00.size() << "\n";
 
   std::cout << "\nVector<double> v1{5}; calls\n";
-  Vector<double> v1{5};
+  Vector<double> v1{5};  /* This involves the list initializer {value1, value2, ...} */
+  /*std::cout << "\nVector<double> v1a(4); calls\n";
+  Vector<double> v1a(4,2); /* This invokes the size initializer. (size, value) */
 
   std::cout << "\nVector<double> v2 = v1; calls\n";
   Vector<double> v2 = v1;
