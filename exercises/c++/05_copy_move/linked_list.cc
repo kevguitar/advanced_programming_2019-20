@@ -1,3 +1,7 @@
+#include <algorithm>  // std::copy
+#include <iostream>
+#include <memory>
+
 enum class Insertion_method { push_back, push_front };
 
 template <class value_type>
@@ -5,63 +9,99 @@ class List {
  public:
   // insert a new node with the value v according to the method m
   // this method should be used to fill the list
-  /* It uses the std::copy semantics. Here, std::move is not suitable. */
   void insert(const value_type& v, const Insertion_method m);
-
-  // && denotes "arg-value reference" What is it??
-  /* It is not an lvalue, or an object that is not given a name (i.e. it cannot 
-     be assigned to the lhs of an equation). Here, std::move is suitable.
-     Example application where argvalue is needed:
-     std::vector<Vector<int>> vv;
-     vv.push_back(Vector<int(78)); 
-     The last expression takes an argument that is not needed after constructing
-     the vector. */  
   void insert(value_type&& v, const Insertion_method m);
 
   // return the size of the list
-  std::size_t size() const;
+  std::size_t size() const { return size; } /* without const declaration here, 
+                                               error in main when calling 
+                                               "const l.size();" */
 
-  // delete all the nodes of the list
+  // delete all the nodes of the list (decl only)
   void reset();
 
-  // constructor(s) for List
+  // default ctor
+  List() : node{}, head{}, size{} { std::cout << "custom ctor\n"; }
+
+  // custom ctor
+  explicit List(const std::size_t length)
+      : node{/* node ctor */}, head{new node{/* node ctor */}}, size{length} {
+    std::cout << "custom ctor\n";
+  }
+
+  // TODO: copy ctor (decl only)
+  List(const List& l);
+
+  // move ctor
+  List(List&& l) {}
   
-  // copy semantics // TODO: like for vector
-  // move semantics // TODO: like for vector
+  // TODO: copy assignment (decl only)
+  List& operator=(const List& l);
+
+  // TODO: move assignment (decl only)
+  List& operator=(List&& l);
   
-  // destructor     // TODO: like for vector
+  // default destructor
+  ~List() = default;
 
  private:
- 
   // private struct node with the proper value_type
   struct node {
     value_type value;
     std::unique_ptr<node> next;
 
-    // implement suitable constructor(s) for node
-    // TODO!!
+    // custom ctor
+    explicit node(const value_type& v) 
+        : value{v}, next{new std::unique_ptr<node>} {}
+
+    // default ctor
+    node() == default;
+
+    // copy ctor
+    node(const node& n) : value{n.value}, next{n.next} {}
+
+    // move ctor
+    node(node&& n) : value{std::move(n.value)}, next{std::move(n.next)} {}
+
+    // copy assignment
+    node& operator=(const node& n) {
+      if (&n == this) return *this;
+      next.reset();              // first of all clean my memory
+      auto tmp = n;              // then use copy ctor
+      (*this) = std::move(tmp);  // finally move assignment
+
+      return *this;
+    }
+
+    // move assignment
+    node& operator=(node&& n) {
+      if (&n == this) return *this;
+      value = std::move(n.value);
+      next = std::move(n.next);
+
+      return this;
+    }
     
-    // copy and move semantics if needed
-    // Could be useful; observe vector class and judge afterwards.
-    
-    // destructor // Why would it be needed here?
+    // default destructor
+    ~node() = default;
   };
 
-  // append the newly created node at the end of the list
+  // append the newly created node at the end of the list (decls only)
+  // TODO
   void push_back(const value_type& v);
-  void push_back(value_type&& v);  /* argvalue overload */
+  void push_back(value_type&& v);
 
-  // insert the newly created node in front of the list
+  // insert the newly created node in front of the list (decls only)
+  // TODO
   void push_front(const value_type& v);
-  void push_front(value_type&& v);  /* argvalue overload */
+  void push_front(value_type&& v);
 
   std::unique_ptr<node> head;
   std::size_t size;
 };
 
-// TODO: Understand hierarchy of member functions (which are fundamental,
-// which are secondary? Which are private, which are public?)
 
+// TODO
 template <class value_type>
 void List::insert(const value_type& v, const Insertion_method m) {
   if (m==Insertion_method::push_front) {
@@ -79,6 +119,7 @@ void List::insert(const value_type& v, const Insertion_method m) {
   }
 }
 
+// TODO
 template <class value_type>
 void List::insert(value_type&& v, const Insertion_method m) {
   if (m==Insertion_method::push_front) {
@@ -96,6 +137,31 @@ void List::insert(value_type&& v, const Insertion_method m) {
   }
 }
 
+
+// deletes all the nodes of the list
+template <class value_type>
+void List::reset() {
+  // deletes node pointers
+  unique_ptr<node> foot{head};
+  if (head) { head = (*foot).next; }  // if head!=nullptr push head to next node
+  while(head) {                       // check if head==nullptr;
+    head = (*head).next;              // push head to next node
+    (*foot).next.reset(nullptr);      // delete old head
+  }
+  // set size to 0;
+  size = 0;
+
+}
+
+// TODO
 template <class T>
 std::ostream& operator<<(std::ostream& os, const List<T>& l) {
 }
+
+/*template <typename T>
+std::ostream& operator<<(std::ostream& os, const Vector<T>& v) {
+  for (const auto& x : v)
+    os << x << " ";
+  os << std::endl;
+  return os;
+}*/
