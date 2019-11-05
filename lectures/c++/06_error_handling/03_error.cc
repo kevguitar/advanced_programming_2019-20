@@ -1,7 +1,7 @@
 #include <cmath>
 #include <iostream>
 
-#include "ap_error.h"
+#include "ap_error.h" // AP_ERROR
 
 // implment a square root function that "deals with" negative
 // numbers. Moreover according to the logic of the program, d should
@@ -35,7 +35,7 @@ int main() {
 
 double square_root(const double d) {
   // test the pre-conditions
-
+  // AP_ERROR(bool condition, datatype) << string error_message;
   AP_ERROR(d >= 0 && d <= 50, Square_root_invalid)
       << "In our library the argument must be positive and less or equal than "
          "50.\n";

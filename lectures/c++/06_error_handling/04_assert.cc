@@ -30,6 +30,16 @@ double square_root(const double d) {
   // test the pre-conditions
   assert(d >= 0 && d <= 50);  // provided by C, no execeptions
 
+  /* asset is a compile flag that tells the compiler to skip checks if -DNDEBUG
+     is called */
+
+  /* error vs assets: when reading external input, use errors.
+     when reading internal code, use assets to be able to speed up the code. */
+  
+  /* Don't comment out debugging code, or use custom flags. Assets are much more
+     simple. */
+
+
   // AP_ASSERT(d>=0 && d<=50) <<  "d should be in the range [0,50]";
 
   // AP_ASSERT_IN_RANGE(d,0,50);

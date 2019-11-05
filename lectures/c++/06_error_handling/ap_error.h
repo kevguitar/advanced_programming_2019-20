@@ -111,7 +111,7 @@ namespace internal {
     }
 
     inline MessageHandler& operator<<(
-        std::ostream& (*basic_manipulator)(std::ostream&)) {
+        std::ostream& (*basic_manipulator)(std::ostream&)) { // function pointer
       _os << basic_manipulator;
       return *this;
     }
@@ -133,6 +133,8 @@ namespace internal {
   template <typename ET>
   struct AssertHelper {
     AssertHelper() = default;
+    /* "throw" here just passes the exception type and does not throw the 
+       exception directly inside the constructor, which can become messy. */ 
     void operator=(const MessageHandler& m) { throw ET{m.get_string()}; }
   };
 
@@ -165,6 +167,10 @@ namespace internal {
 #define AP_ERROR(...)                                                          \
   SELECT_MACRO(__VA_ARGS__, _AP_ERROR2, _AP_ERROR1, dummy)(__VA_ARGS__)
 
+
+/* MACROS are defined in one line. Here, _AP_ERROR2 is defined as a macro, since
+   macros are replaced in the code, so the __FILE__ and __LINE__ are evaluated
+   in place. */
 #define _AP_ERROR2(cond, exception_type)                                       \
   if (!(cond))                                                                 \
   ::internal::AssertHelper<exception_type>{} =                                 \
@@ -184,6 +190,7 @@ namespace internal {
 #define AP_ASSERT(...)                                                         \
   SELECT_MACRO(__VA_ARGS__, _AP_ASSERT2, _AP_ASSERT1, dummy)(__VA_ARGS__)
 
+/* This tells the compiler to react to NDEBUG being defined. */ 
 #ifndef NDEBUG
 #  define _AP_ASSERT_(cond, exception_type) AP_ERROR(cond, exception_type)
 #else

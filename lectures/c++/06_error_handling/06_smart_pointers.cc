@@ -4,12 +4,15 @@
 #include "ap_error.h"
 
 class Vector {
-  std::unique_ptr<double[]> elem;
+  std::unique_ptr<double[]> elem;  /* This includes error handling if sth fails
+                                      durong stack unwinding. */
 
  public:
   Vector(const unsigned int l) : elem{new double[l]} {
     std::cout << "Vector ctor\n";
   }
+  /* "noexcept": compiler flag to tell the compiler not to throw an exception. 
+     Attention: If this is done, there will be no notifications when failure! */
   double& operator[](const unsigned int i) noexcept {
     return elem[i];
   }  // you can use smart pointers almost like raw pointers
@@ -30,7 +33,10 @@ class ManyResources {
 
 int main() {
   try {
-    std::unique_ptr<int[]> up{new int[7]};
+    std::unique_ptr<int[]> up{new int[7]}; /* Here, defining the pointer inside
+                                              the try-block is no problem, since
+                                              the constructor is responsible for
+                                              cleaning the memory. */
     ManyResources mr;
 
   } catch (const std::exception& e) {

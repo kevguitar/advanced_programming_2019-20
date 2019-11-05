@@ -3,6 +3,9 @@
 
 #include "ap_error.h"
 
+/* When an exception is thrown, the compiler has to unwind the stacks 
+   corresponding to different layers of code. */
+
 class Foo {
  public:
   Foo() { std::cout << "Foo" << std::endl; }
@@ -35,12 +38,12 @@ class ManyResources {
  public:
   ManyResources() : ptr{nullptr}, v{3} {
     std::cout << "Manyresources" << std::endl;
-    try {
+    try { // new will throw 
       ptr = new double[5];  // new(std::nothrow) double[5] could be better
       AP_ERROR(false) << "Error in ManyResources ctor." << std::endl;
     } catch (...) {
       delete[] ptr;  // <----
-      throw;
+      throw;  // This is a rethrow of whatever has been thrown inside catch.
     }
   }
 
@@ -52,7 +55,13 @@ class ManyResources {
 
 int main() {
   Foo f;
+
+  /* Have to call raw_ptr outside the try block, since we want to execute 
+     delete[] raw_ptr outside. */
   int* raw_ptr = new int[7];
+
+  /* Do not use raw pointers, since they produce memory leaks. Instead, use 
+     smart pointers, e.g. unique_ptr<typename>, shared_ptr<typename>. */
   try {
     // int * raw_ptr=new int[7]; // wrong because raw_ptr would not be visible
     // inside the catch-clause
@@ -75,4 +84,8 @@ int main() {
 
   delete[] raw_ptr;  // <---
   return 0;
+
+  // TODO: execute this script to see:
+  // - when which constructor and destructor is called
+  // - when an exception is thrown
 }
