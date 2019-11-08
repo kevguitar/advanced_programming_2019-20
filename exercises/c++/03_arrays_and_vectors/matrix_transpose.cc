@@ -13,10 +13,10 @@ void print_matrix(const T& matrix, std::size_t rows, std::size_t cols);
 
 
 int main(int argc, char* argv[]) {
-  std::string[2] tmp;
+  std::string* tmp;
   for (auto i{0}; i<2; ++i) {
     std::istringstream is{argv[i+1]};
-    is>>tmp[i];
+    is>>*tmp;
   }
   std::size_t r{tmp[0]}, c{tmp[1]};
   std::cout<<"rows = "<<r<<", cols = "<<c<<std::endl;
