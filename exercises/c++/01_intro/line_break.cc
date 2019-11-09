@@ -4,6 +4,7 @@
 // Write a simple text formatter that breaks the lines longer than a given 
 // number of characters. This formatter does not break words.
 
+
 int main() {
   std::string line;
   std::string word;

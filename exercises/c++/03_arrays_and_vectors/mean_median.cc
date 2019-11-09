@@ -2,7 +2,6 @@
 #include<string>
 #include<fstream>  // read string from file
 #include<vector>
-#include<algorithm>  // std::sort(v.begin(), v.end());
 
 
 template <typename T>
