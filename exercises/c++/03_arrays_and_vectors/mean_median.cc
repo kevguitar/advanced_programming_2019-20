@@ -14,19 +14,21 @@ double median(std::vector<T>& v);
 template <class T>
 double mean(std::vector<T>& v);
 
+
 int main() {
   std::vector<double> temps;
   store_numbers<double>(temps, "temperatures.txt");
 
   std::cout<<"median = "<<median(temps)<<std::endl;
   std::cout<<"mean = "<<mean(temps)<<std::endl;
-
+/*
   // DEBUG
   std::cout<<"length = "<<temps.size()<<std::endl;
   for (auto x : temps) std::cout<<x<<std::endl;
-
+*/
   return 0;
 }
+
 
 template <typename T>
 void store_numbers(std::vector<T>& v, const std::string& filename) {
@@ -49,8 +51,8 @@ double median(std::vector<T>& v) {
   std::sort(v.begin(), v.end());
   
   if (v.size()%2==0)
-    return 0.5*(v[v.size()/2] + v[v.size()-1]);
-  else return v[v.size()/2+1];
+    return 0.5*(v[v.size()/2] + v[v.size()/2-1]);
+  else return v[v.size()/2];
 }
 
 
