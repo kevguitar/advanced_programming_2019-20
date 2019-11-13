@@ -42,12 +42,14 @@ class Vector {
   // move semantics
 
   // move ctor
-  /* Why need double reference here? */
+  /* Vector&& v is an rvalue, since it has no function on the lhs of an equation
+     std::move takes the vector v itself (no copy) */ 
   Vector(Vector&& v) : _size{std::move(v._size)}, elem{std::move(v.elem)} {
     std::cout << "move ctor\n";
   }
 
-  // Vector(Vector&& v) = default; // ok
+  // Vector(Vector&& v) = default; // ok 
+      /* --> Compiler understands to use std::move in initializer */ 
 
   // move assignment
   Vector& operator=(Vector&& v) {
@@ -59,6 +61,7 @@ class Vector {
   }
 
   // Vector& operator=(Vector&& v) = default; // ok
+      /* --> Compiler understands to use std::move in move assignment */ 
 
   // end move semantics
   /////////////////////////
@@ -135,25 +138,27 @@ std::ostream& operator<<(std::ostream& os, const Vector<T>& v) {
 }
 
 int main() {
-  std::cout << "Vector<int> v0; calls\n";
+  std::cout << "Vector<int> v0; calls\n";     /* default ctor */
   Vector<int> v0;
-  std::cout << v0.size() << "\n";
-  std::cout << "Vector<int> v00{}; calls\n";
-  Vector<int> v00{};
-  std::cout << v00.size() << "\n";
+  std::cout << v0.size() << "\n";             /* random size_t */
+  std::cout << "Vector<int> v00{}; calls\n";  /* default ctor */
+  Vector<int> v00{};    
+  std::cout << v00.size() << "\n";            /* another random size_t */
 
-  std::cout << "\nVector<double> v1{5}; calls\n";
+  std::cout << "\nVector<double> v1{5}; calls\n";   /* custom ctor */
   Vector<double> v1{5};  /* This involves the list initializer {value1, value2, ...} */
   /*std::cout << "\nVector<double> v1a(4); calls\n";
   Vector<double> v1a(4,2); /* This invokes the size initializer. (size, value) */
 
-  std::cout << "\nVector<double> v2 = v1; calls\n";
+  std::cout << "\nVector<double> v2 = v1; calls\n";  /* copy ctor */
   Vector<double> v2 = v1;
-  std::cout << "\nv2 = Vector<double>{7}; calls\n";
+  std::cout << "\nv2 = Vector<double>{7}; calls\n";  /* custom ctor;
+                                                        move assignment    */
   v2 = Vector<double>{7};
-  std::cout << "\nVector<double> v3{std::move(v1)}; calls\n";
+  std::cout << "\nVector<double> v3{std::move(v1)}; calls\n";  /* move ctor */
   Vector<double> v3{std::move(v1)};  // now v1 should not be used
-  std::cout << "\nv3 = v2; calls\n";
+  std::cout << "\nv3 = v2; calls\n";   /* copy assignment ( copy ctor, 
+                                                            move assignment ) */
   v3 = v2;
   std::cout << "\nv2 = " << v2;
   std::cout << "v3 = " << v3;
@@ -172,14 +177,15 @@ int main() {
   std::cout << "\nv2 = " << v2;
   std::cout << "v3 = " << v3;
 
-  std::cout << "\nVector<double> v4{v3 + v3}; calls\n";
+  std::cout << "\nVector<double> v4{v3 + v3}; calls\n";  /* custom ctor */
   Vector<double> v4{v3 + v3};
 
   std::cout << "v4 = " << v4;
 
   std::cout << "\nNRVO: Named Return Value Optimization\n";
 
-  std::cout << "\nv4 = v3 + v3 + v2 + v3; calls\n";
+  std::cout << "\nv4 = v3 + v3 + v2 + v3; calls\n";  /* custom ctor (3x)
+                                                        move assignment */
   v4 = v3 + v3 + v2 + v3;
   std::cout << "v4 = " << v4;
 
