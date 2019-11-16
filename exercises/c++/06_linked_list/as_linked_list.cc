@@ -40,7 +40,7 @@ class List {
     // auto new_node = new node {v,h}; 
     // head.reset(new_node);
 
-    /* Here, the move (copy) ctor is used v is an rvalue (lvalue). */
+    /* Here, the move (copy) ctor is used if v is an rvalue (lvalue). */
     // head.reset(new node{v, head.release()});
 
     /* std::forward<OT> forwards v as an rvalue (lvalue) if v is an 
@@ -83,12 +83,10 @@ typename List<T>::node* List<T>::tail() noexcept {
   return tmp;
 }
 
-/* TODO: Understand remaining lines. */
-
 template <class T>
 template <class OT>
 void List<T>::insert(OT&& v, const method m) {
-  if (!head) {
+  if (!head) { // If List is empty, define *head as the only node.
     // head.reset(new node{v,nullptr});
     head = std::make_unique<node>(std::forward<OT>(v), nullptr);
     return;
@@ -102,6 +100,8 @@ void List<T>::insert(OT&& v, const method m) {
       push_front(std::forward<OT>(v));
       break;
     default:
+
+      /* TODO: Review AP_ERROR */
       AP_ERROR(false) << "Unknown insertion method";
       break;
   };
@@ -125,13 +125,17 @@ std::ostream& operator<<(std::ostream& os, const List<T>& l) {
   return os;
 }
 
+/* copy ctor */
 template <class T>
 List<T>::List(const List& l) {
+  /* Raw pointer: all list elements have to be inserted manually */
   // auto tmp = l.head.get();
   // while(tmp){
   //   insert(tmp->value,method::push_back);
   //   tmp=tmp->next.get();
   // }
+  /* unique_ptr: new List takes l.head as new head using custom copy ctor of
+     class "node" */
   head = std::make_unique<node>(l.head);
 }
 
