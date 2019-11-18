@@ -7,9 +7,9 @@
 // never be greater than 50
 double square_root(const double d);
 
-struct Square_root_invalid {
+struct Square_root_invalid { /* exception is struct with message */
   std::string message;
-  Square_root_invalid(const std::string& s) : message{s} {}
+  Square_root_invalid(const std::string& s) : message{s} {} /* custom ctor */
 };
 
 int main() {
@@ -32,6 +32,8 @@ int main() {
 double square_root(const double d) {
   // test the pre-conditions
   if (d < 0)
+    /* std::to_string(typename val): Returns a string with the representation 
+       of val. */
     throw Square_root_invalid{"Cannot handle negative numbers. You gave me " +
                               std::to_string(d)};
   if (d > 50)

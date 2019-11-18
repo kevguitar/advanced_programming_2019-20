@@ -6,7 +6,7 @@
 // never be greater than 50
 double square_root(const double d);
 
-struct Negative_number {};
+struct Negative_number {}; /* exception is simple struct */
 
 struct Bigger_than_expected {};
 

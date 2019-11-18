@@ -171,6 +171,14 @@ namespace internal {
 /* MACROS are defined in one line. Here, _AP_ERROR2 is defined as a macro, since
    macros are replaced in the code, so the __FILE__ and __LINE__ are evaluated
    in place. */
+
+/* Stroustrup, the C++ Programming Language, third ed., sect. 7.8:
+    " (...) Macros manipulate character strings and know little about C++ syntax
+     and nothing about C++ types or scope rules. Only the expanded form of a 
+     macro is seen by the compiler, so an error in a macro will be reported when
+     the macro is expanded, not when it is defined. (...)"
+*/
+
 #define _AP_ERROR2(cond, exception_type)                                       \
   if (!(cond))                                                                 \
   ::internal::AssertHelper<exception_type>{} =                                 \
