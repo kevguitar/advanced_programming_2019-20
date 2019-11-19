@@ -1,11 +1,12 @@
 #include <iostream>
 #include <memory>  // std::uniqe_ptr
+#include <cmath>   // sqrt
 
 #include "ap_error.h"
 
 class Vector {
   std::unique_ptr<double[]> elem;  /* This includes error handling if sth fails
-                                      durong stack unwinding. */
+                                      during stack unwinding. */
 
  public:
   Vector(const unsigned int l) : elem{new double[l]} {
@@ -26,16 +27,20 @@ class ManyResources {
  public:
   ManyResources() : ptr{new double[5]}, v{3} {
     std::cout << "ManyResources ctor\n";
-    AP_ERROR(false) << "I am simulating something wrong.\n";
+    //AP_ERROR(false) << "I am simulating something wrong.\n";
   }
   ~ManyResources() noexcept { std::cout << "~ManyResources\n"; }
 };
 
 int main() {
   try {
-    std::unique_ptr<int[]> up{new int[7]}; /* Here, defining the pointer inside
+    /* int* up{new int[7]}; // warning: unused variable ‘up’ [-Wunused-variable] 
+                         //                and memory leak produced */  
+    std::unique_ptr<int[]> up{new int[7]}; 
+                                           /* Here, defining the pointer inside
                                               the try-block is no problem, since
-                                              the constructor is responsible for
+                                              the constructor of the class
+                                              std::unique_ptr is responsible for
                                               cleaning the memory. */
     ManyResources mr;
 

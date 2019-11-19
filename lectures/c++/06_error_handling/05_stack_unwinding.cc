@@ -4,7 +4,10 @@
 #include "ap_error.h"
 
 /* When an exception is thrown, the compiler has to unwind the stacks 
-   corresponding to different layers of code. */
+   corresponding to different layers of code.
+  To check for memory leaks, type:
+  valgrind --leak-check=yes ./05_stack_unwinding.x
+*/
 
 class Foo {
  public:
@@ -39,7 +42,7 @@ class ManyResources {
   ManyResources() : ptr{nullptr}, v{3} {
     std::cout << "Manyresources" << std::endl;
     try { // new will throw 
-      ptr = new double[5];  // new(std::nothrow) double[5] could be better
+      ptr = new(std::nothrow) double[5];  // new(std::nothrow) double[5] could be better
       AP_ERROR(false) << "Error in ManyResources ctor." << std::endl;
     } catch (...) {
       delete[] ptr;  // <----
